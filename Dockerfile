@@ -1,0 +1,2 @@
+FROM catmaid/catmaid:stable
+
