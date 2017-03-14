@@ -1,4 +1,3 @@
 FROM catmaid/catmaid:stable
 
-# Ensuring all installed 
-RUN apt-get -y install nginx uwsgi uwsgi-plugin-python
+COPY supervisor-catmaid.conf /etc/supervisor/conf.d/supervisor-catmaid.conf
