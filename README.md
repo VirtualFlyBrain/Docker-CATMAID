@@ -1,2 +1,2 @@
 # Docker-CATMAID
-Server loaded with L3EM data
+Server loaded with L1EM data
