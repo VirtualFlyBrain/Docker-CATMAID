@@ -1,5 +1,7 @@
 FROM catmaid/catmaid:stable
 
+ENV TFTP-SERVER=vfbds0.inf.ed.ac.uk
+
 COPY supervisor-catmaid.conf /etc/supervisor/conf.d/supervisor-catmaid.conf
 
 RUN mkdir /opt/VFB
