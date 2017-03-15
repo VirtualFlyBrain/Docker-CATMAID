@@ -5,6 +5,8 @@ ENV FILESERVER=vfbds0.inf.ed.ac.uk
 
 COPY supervisor-catmaid.conf /etc/supervisor/conf.d/supervisor-catmaid.conf
 
+COPY catmaid_insert_L1EM_project.py /home/django/applications/catmaid/management/commands/catmaid_insert_L1EM_project.py
+
 COPY create_superuser.py /home/scripts/docker/create_superuser.py
 
 RUN mkdir /opt/VFB
