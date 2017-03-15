@@ -27,7 +27,6 @@ class Command(NoArgsCommand):
             {'title': 'acardona_0111_8',
              'dimension': Integer3D(32768,32768,4840),
              'resolution': Double3D(1.0,1.0,1.0),
-             'num_zoom_levels': 6,
              'image_base': '/tiles/0111-8/',
              'comment': '''<p></p>''',
              'trakem2_project': False})
