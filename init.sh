@@ -6,7 +6,7 @@ service postgresql start
 # Load tile data
 ln -s /opt/VFB/L1EM /opt/tiles
 cd /opt/VFB/ 
-tftp vfbds0.inf.ed.ac.uk << fin
+tftp $TFTP-SERVER << fin
   get /catmaid/L1EM.tar.gz 
   quit
 fin && \
