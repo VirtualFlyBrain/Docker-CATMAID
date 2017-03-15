@@ -32,6 +32,11 @@ class Command(NoArgsCommand):
              'comment': '''<p></p>''',
              'trakem2_project': False})
 
+        # Remove example Projects:
+        Project.objects.exclude(title='Default Project')
+        Project.objects.exclude(title='Evaluation data set')
+        Project.objects.exclude(title='Focussed Ion Beam (FIB)')
+        
         # Make sure that project and its stacks exist, and are
         # linked via ProjectStack:
 
