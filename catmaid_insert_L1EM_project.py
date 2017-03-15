@@ -57,7 +57,7 @@ class Command(NoArgsCommand):
 
         # Also set up the FIB project for tracing with treelines:
 
-        tracing_project = projects['Focussed Ion Beam (FIB)']['project_object']
+        tracing_project = projects['Drosophila Larval EM L1']['project_object']
 
         call_command('catmaid_setup_tracing_for_project',
                      project_id=tracing_project.id,
