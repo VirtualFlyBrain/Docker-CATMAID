@@ -9,7 +9,7 @@ cd /opt/VFB/
 tftp $TFTP-SERVER << fin
   get /catmaid/L1EM.tar.gz 
   quit
-fin && \
+fin
 tar -zxvf L1EM.tar.gz &
 
 # start CATMAID
