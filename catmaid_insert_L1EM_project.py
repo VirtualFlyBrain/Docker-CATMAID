@@ -41,8 +41,7 @@ class Command(NoArgsCommand):
 
         for project_title in projects:
             project_object, _ = Project.objects.get_or_create(
-                title=project_title,
-                public=True)
+                title=project_title)
             for stack_dict in projects[project_title]['stacks']:
                 try:
                     stack = Stack.objects.get(
