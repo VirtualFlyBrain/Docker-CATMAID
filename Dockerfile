@@ -20,6 +20,7 @@ RUN chmod -R 777 /opt/VFB
 RUN apt-get -y install tftp
 
 RUN service postgresql start \
+    && sleep 10m \
     && /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
     && workon catmaid \
     && cd /home/django/projects/mysite \
