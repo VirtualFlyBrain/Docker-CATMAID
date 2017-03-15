@@ -8,4 +8,6 @@ COPY nginx-catmaid.conf /etc/nginx/sites-enabled/
 
 COPY init.sh /opt/VFB/init.sh 
 
+RUN chmod -R 777 /opt/VFB
+
 ENTRYPOINT ["/bin/bash", "-c", "/opt/VFB/init.sh"]
