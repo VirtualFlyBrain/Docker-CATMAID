@@ -12,4 +12,6 @@ COPY init.sh /opt/VFB/init.sh
 
 RUN chmod -R 777 /opt/VFB
 
+RUN apt-get -y install tftp
+
 ENTRYPOINT ["/bin/bash", "-c", "/opt/VFB/init.sh"]
