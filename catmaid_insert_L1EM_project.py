@@ -31,9 +31,12 @@ class Command(BaseCommand):
              'trakem2_project': False})
 
         # Remove example Projects:
-#         Project.objects.exclude(title='Default Project')
-#         Project.objects.exclude(title='Evaluation data set')
-#         Project.objects.exclude(title='Focussed Ion Beam (FIB)')
+        demo_project=Project.objects.get(title='Default Project')
+        demo_project.delete()
+        demo_project=Project.objects.get(title='Evaluation data set')
+        demo_project.delete()
+        demo_project=Project.objects.get(title='Focussed Ion Beam (FIB)')
+        demo_project.delete()
         
         # Make sure that project and its stacks exist, and are
         # linked via ProjectStack:
