@@ -12,10 +12,6 @@ COPY catmaid_insert_L1EM_project.py /home/django/applications/catmaid/management
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
-COPY known_hosts ~/.ssh/known_hosts
-COPY id_rsa.pub ~/.ssh/known_hostsid_rsa.pub
-COPY id_rsa ~/.ssh/known_hostsid_rsa
-
 RUN mkdir /opt/VFB
 
 COPY nginx-catmaid.conf /etc/nginx/sites-enabled/
