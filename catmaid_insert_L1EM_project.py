@@ -1,17 +1,20 @@
-from django.core.management.base import NoArgsCommand, CommandError
-from optparse import make_option
+from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 
 from catmaid.models import *
 from catmaid.fields import *
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = "Create L1EM project in CATMAID"
 
-    def handle_noargs(self, **options):
+    def add_arguments(self, parser):
+        parser.add_argument('--user', dest='user_id', required=True,
+            help='The ID of the user to own the example projects')
+    
+    def handle(self, *args, **options):
 
         if not options['user_id']:
-            raise CommandError, "You must specify a user ID with --user"
+            raise CommandError("You must specify a user ID with --user")
 
         user = User.objects.get(pk=options['user_id'])
 
