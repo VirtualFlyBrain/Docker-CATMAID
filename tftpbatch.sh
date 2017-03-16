@@ -3,7 +3,7 @@
 server="tftp://$2"
 
 while IFS= read -r path; do
-    [[ "$path" =~ ^\ *$ ]] && continue
+    [[ "$path" =~ ^/ *$ ]] && continue
     dir="$(dirname "$path")"
     printf "GET %s => %s\n" "$path" "$dir"
     ! [ -d "$dir" ] && mkdir -p "$dir"
