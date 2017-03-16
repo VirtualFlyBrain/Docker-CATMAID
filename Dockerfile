@@ -18,6 +18,8 @@ COPY nginx-catmaid.conf /etc/nginx/sites-enabled/
 
 COPY init.sh /opt/VFB/init.sh 
 
+COPY tftpbatch.sh /opt/VFB/tftpbatch.sh 
+
 RUN chmod -R 777 /opt/VFB
 
 RUN apt-get -y install tftp
