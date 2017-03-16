@@ -19,12 +19,12 @@ RUN chmod -R 777 /opt/VFB
 
 RUN apt-get -y install tftp
 
-RUN service postgresql start \
-    && sleep 10m \
-    && /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
-    && workon catmaid \
-    && cd /home/django/projects/mysite \
-    && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
-    && python manage.py catmaid_insert_L1EM_project --user=1"
+# RUN service postgresql start \
+#     && sleep 10m \
+#     && /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
+#     && workon catmaid \
+#     && cd /home/django/projects/mysite \
+#     && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
+#     && python manage.py catmaid_insert_L1EM_project --user=1"
 
 ENTRYPOINT ["/bin/bash", "-c", "/opt/VFB/init.sh"]
