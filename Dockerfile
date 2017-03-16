@@ -22,7 +22,7 @@ COPY tftpbatch.sh /opt/VFB/tftpbatch.sh
 
 RUN chmod -R 777 /opt/VFB
 
-RUN apt-get -y install tftp
+RUN apt-get -y install tftp curl
 
 RUN service postgresql start \
     && sleep 10m \
