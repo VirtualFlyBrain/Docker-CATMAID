@@ -33,7 +33,6 @@ class Command(BaseCommand):
              'image_base': 'http://openconnecto.me/ocptilecache/tilecache/acardona_0111_8/image/xy/',
              'file_extension': 'png',
              'num_zoom_levels': 6, 
-             'orientation': 0, 
              'comment': '''<p></p>''',
              'tile_height': 512, 
              'tile_source_type': 1, 
