@@ -26,8 +26,14 @@ class Command(BaseCommand):
             {'title': 'acardona_0111_8',
              'dimension': Integer3D(32768,32768,4840),
              'resolution': Double3D(1.0,1.0,1.0),
-             'image_base': '/tiles/0111-8/',
+             'image_base': 'http://openconnecto.me/ocptilecache/tilecache/acardona_0111_8/image/xy/',
+             'file_extension': 'png',
+             'num_zoom_levels': 6, 
+             'orientation': 0, 
              'comment': '''<p></p>''',
+             'tile_height': 512, 
+             'tile_source_type': 1, 
+             'tile_width': 512, 
              'trakem2_project': False})
 
         # Remove example Projects:
