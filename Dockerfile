@@ -3,6 +3,9 @@ FROM catmaid/catmaid:stable
 # TFTP server with tiles
 ENV FILESERVER=vfbds0.inf.ed.ac.uk
 
+#swapping to bash 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh && rm /bin/sh.distrib && ln -s /bin/bash /bin/sh.distrib
+
 COPY supervisor-catmaid.conf /etc/supervisor/conf.d/supervisor-catmaid.conf
 
 COPY catmaid_insert_L1EM_project.py /home/django/applications/catmaid/management/commands/catmaid_insert_L1EM_project.py
