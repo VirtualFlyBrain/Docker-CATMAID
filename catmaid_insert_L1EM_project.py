@@ -1,23 +1,26 @@
-from django.core.management.base import NoArgsCommand, CommandError
-from optparse import make_option
+from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 
 from catmaid.models import *
 from catmaid.fields import *
 
-class Command(NoArgsCommand):
+from guardian.shortcuts import assign_perm
+from guardian.utils import get_anonymous_user
+
+class Command(BaseCommand):
     help = "Create L1EM project in CATMAID"
 
-    option_list = NoArgsCommand.option_list + (
-        make_option('--user', dest='user_id', help='The ID of the project to setup tracing for'),
-        )
-
-    def handle_noargs(self, **options):
+    def add_arguments(self, parser):
+        parser.add_argument('--user', dest='user_id', required=True,
+            help='The ID of the user to own the example projects')
+    
+    def handle(self, *args, **options):
 
         if not options['user_id']:
-            raise CommandError, "You must specify a user ID with --user"
+            raise CommandError("You must specify a user ID with --user")
 
         user = User.objects.get(pk=options['user_id'])
+        anon_user = get_anonymous_user()
 
         projects = {'Drosophila Larval EM L1': {'stacks': []}}
 
@@ -27,14 +30,22 @@ class Command(NoArgsCommand):
             {'title': 'acardona_0111_8',
              'dimension': Integer3D(32768,32768,4840),
              'resolution': Double3D(1.0,1.0,1.0),
-             'image_base': '/tiles/0111-8/',
+             'image_base': 'http://openconnecto.me/ocptilecache/tilecache/acardona_0111_8/image/xy/',
+             'file_extension': 'png',
+             'num_zoom_levels': 6, 
              'comment': '''<p></p>''',
+             'tile_height': 512, 
+             'tile_source_type': 1, 
+             'tile_width': 512, 
              'trakem2_project': False})
 
         # Remove example Projects:
-        Project.objects.exclude(title='Default Project')
-        Project.objects.exclude(title='Evaluation data set')
-        Project.objects.exclude(title='Focussed Ion Beam (FIB)')
+        demo_project=Project.objects.get(title='Default Project')
+        demo_project.delete()
+        demo_project=Project.objects.get(title='Evaluation data set')
+        demo_project.delete()
+        demo_project=Project.objects.get(title='Focussed Ion Beam (FIB)')
+        demo_project.delete()
         
         # Make sure that project and its stacks exist, and are
         # linked via ProjectStack:
@@ -54,11 +65,7 @@ class Command(NoArgsCommand):
                     project=project_object,
                     stack=stack)
             projects[project_title]['project_object'] = project_object
+            # Add permission to the anonymous user to browse project
+            assign_perm('can_browse', anon_user, title=project_title)
 
-        # Also set up the FIB project for tracing with treelines:
-
-        tracing_project = projects['Drosophila Larval EM L1']['project_object']
-
-        call_command('catmaid_setup_tracing_for_project',
-                     project_id=tracing_project.id,
-                     user_id=user.id)
+        
