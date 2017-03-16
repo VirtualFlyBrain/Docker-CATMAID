@@ -1,6 +1,6 @@
 #!/bin/bash
 
-server="tftp://$2"
+server="tftp://$2/catmaid"
 
 while IFS= read -r path; do
     [[ "$path" =~ ^/ *$ ]] && continue
