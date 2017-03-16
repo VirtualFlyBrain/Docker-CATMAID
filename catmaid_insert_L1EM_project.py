@@ -8,10 +8,6 @@ from catmaid.fields import *
 class Command(NoArgsCommand):
     help = "Create L1EM project in CATMAID"
 
-    option_list = NoArgsCommand.option_list + (
-        make_option('--user', dest='user_id', help='The ID of the project to setup tracing for'),
-        )
-
     def handle_noargs(self, **options):
 
         if not options['user_id']:
@@ -55,10 +51,5 @@ class Command(NoArgsCommand):
                     stack=stack)
             projects[project_title]['project_object'] = project_object
 
-        # Also set up the FIB project for tracing with treelines:
 
-        tracing_project = projects['Drosophila Larval EM L1']['project_object']
-
-        call_command('catmaid_setup_tracing_for_project',
-                     project_id=tracing_project.id,
-                     user_id=user.id)
+        
