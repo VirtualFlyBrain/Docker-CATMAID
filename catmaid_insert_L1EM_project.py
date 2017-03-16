@@ -4,6 +4,9 @@ from django.core.management import call_command
 from catmaid.models import *
 from catmaid.fields import *
 
+from guardian.shortcuts import assign_perm
+from guardian.utils import get_anonymous_user
+
 class Command(BaseCommand):
     help = "Create L1EM project in CATMAID"
 
@@ -17,6 +20,7 @@ class Command(BaseCommand):
             raise CommandError("You must specify a user ID with --user")
 
         user = User.objects.get(pk=options['user_id'])
+        anon_user = get_anonymous_user()
 
         projects = {'Drosophila Larval EM L1': {'stacks': []}}
 
@@ -62,6 +66,7 @@ class Command(BaseCommand):
                     project=project_object,
                     stack=stack)
             projects[project_title]['project_object'] = project_object
-
+            # Add permission to the anonymous user to browse project
+            assign_perm('can_browse', anon_user, title=project_title)
 
         
