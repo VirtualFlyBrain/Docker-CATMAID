@@ -32,4 +32,6 @@ RUN service postgresql start \
     && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
     && python manage.py catmaid_insert_L1EM_project --user=1
 
+VOLUME /opt/VFB/L1EM
+
 ENTRYPOINT ["/bin/bash", "-c", "/opt/VFB/init.sh"]
