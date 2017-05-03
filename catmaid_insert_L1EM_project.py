@@ -30,7 +30,7 @@ class Command(BaseCommand):
             {'title': 'acardona_0111_8',
              'dimension': Integer3D(32768,32768,4840),
              'resolution': Double3D(1.0,1.0,1.0),
-             'image_base': 'http://data.virtualflybrain.org/L1EM/0111-8/',
+             'image_base': 'https://data.virtualflybrain.org:5000/L1EM/0111-8/',
              'file_extension': 'jpg',
              'num_zoom_levels': 6, 
              'comment': '''<p></p>''',
