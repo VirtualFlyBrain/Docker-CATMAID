@@ -21,7 +21,7 @@ RUN service postgresql start \
     && sleep 10m \
     && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
     && workon catmaid \
-    && cd /home/django/projects/mysite \
+    && cd /home/django/projects \
     && cat /home/scripts/docker/modify_superuser.py | python /home/django/projects/mysite/manage.py shell \
     && python /home/django/projects/mysite/manage.py catmaid_insert_L1EM_project --user=1
 
