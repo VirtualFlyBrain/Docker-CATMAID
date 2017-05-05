@@ -22,7 +22,7 @@ RUN service postgresql start \
     && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
     && workon catmaid \
     && cd /home/django/projects/mysite \
-    && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
-    && python manage.py catmaid_insert_L1EM_project --user=1
+    && cat /home/scripts/docker/modify_superuser.py | python /home/django/projects/mysite/manage.py shell \
+    && python /home/django/projects/mysite/manage.py catmaid_insert_L1EM_project --user=1
 
 ENTRYPOINT ["/bin/bash", "-c", "/opt/VFB/init.sh"]
