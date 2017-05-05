@@ -57,7 +57,7 @@ class Command(BaseCommand):
                 try:
                     stack = Stack.objects.get(
                         title=stack_dict['title'],
-                        image_base=stack_dict['image_base'])
+                        image_base=stack_dict['projectstack'])
                 except Stack.DoesNotExist:
                     stack = Stack(**stack_dict)
                     stack.save()
