@@ -5,7 +5,7 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh && rm /bin/sh.distrib && ln -s /bin/ba
 
 COPY supervisor-catmaid.conf /etc/supervisor/conf.d/supervisor-catmaid.conf
 
-COPY catmaid_insert_L1EM_project.py /home/django/applications/catmaid/management/commands/catmaid_insert_L1EM_project.py
+COPY catmaid_insert_project.py /home/django/applications/catmaid/management/commands/catmaid_insert_project.py
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
@@ -23,6 +23,6 @@ RUN service postgresql start \
     && workon catmaid \
     && cd /home/django/projects \
     && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
-    && python manage.py catmaid_insert_L1EM_project --user=1
+    && python manage.py catmaid_insert_project --user=1
 
 ENTRYPOINT ["/bin/bash", "-c", "/opt/VFB/init.sh"]
