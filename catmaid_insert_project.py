@@ -22,21 +22,21 @@ class Command(BaseCommand):
         user = User.objects.get(pk=options['user_id'])
         anon_user = get_anonymous_user()
 
-        projects = {'Drosophila Larval EM L1': {'stacks': []}}
+        projects = {'Drosophila Adult Brain (FAFB)': {'stacks': []}}
 
         # Define the details of a stack the project:
 
-        projects['Drosophila Larval EM L1']['stacks'].append(
-            {'title': 'acardona_0111_8',
-             'dimension': Integer3D(32768,32768,4840),
-             'resolution': Double3D(1.0,1.0,1.0),
-             'projectstack': 'https://data.virtualflybrain.org:5000/L1EM/0111-8/',
+        projects['Drosophila Adult Brain (FAFB)']['stacks'].append(
+            {'title': 'FAFB00 V14 (JPG85)',
+             'dimension': Integer3D(293952,155648,7063),
+             'resolution': Double3D(4.0,4.0,40.0),
+             'projectstack': 'https://data.virtualflybrain.org:5000/FAFB/',
              'file_extension': 'jpg',
-             'num_zoom_levels': 6, 
+             'num_zoom_levels': -1, 
              'comment': '''<p></p>''',
-             'tile_height': 512, 
-             'tile_source_type': 4, 
-             'tile_width': 512, 
+             'tile_height': 1024, 
+             'tile_source_type': 5, 
+             'tile_width': 1024, 
              'trakem2_project': False})
 
         # Remove example Projects:
@@ -56,8 +56,7 @@ class Command(BaseCommand):
             for stack_dict in projects[project_title]['stacks']:
                 try:
                     stack = Stack.objects.get(
-                        title=stack_dict['title'],
-                        image_base=stack_dict['projectstack'])
+                        title=stack_dict['title'])
                 except Stack.DoesNotExist:
                     stack = Stack(**stack_dict)
                     stack.save()
