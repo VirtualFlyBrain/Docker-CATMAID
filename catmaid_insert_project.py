@@ -22,22 +22,24 @@ class Command(BaseCommand):
         user = User.objects.get(pk=options['user_id'])
         anon_user = get_anonymous_user()
 
-        projects = {'Drosophila Adult Brain (FAFB)': {'stacks': []}}
+        projects = {'FAFB00 [V14]': {'stacks': []}}
 
         # Define the details of a stack the project:
 
-        projects['Drosophila Adult Brain (FAFB)']['stacks'].append(
+        projects['FAFB00 [V14]']['stacks'].append(
             {'title': 'FAFB00 V14 (JPG85)',
              'dimension': Integer3D(293952,155648,7063),
              'resolution': Double3D(4.0,4.0,40.0),
-             'projectstack': 'https://data.virtualflybrain.org:5000/FAFB/',
-             'file_extension': 'jpg',
-             'num_zoom_levels': -1, 
              'comment': '''<p></p>''',
-             'tile_height': 1024, 
-             'tile_source_type': 5, 
-             'tile_width': 1024, 
-             'trakem2_project': False})
+             'mirrors': [{
+                'title': 'Cambridge',
+                'image_base': 'https://flyem.mrc-lmb.cam.ac.uk/fafb-tiles/',
+                'file_extension': 'jpg',
+                'tile_height': 1024, 
+                'tile_width': 1024,
+                'tile_source_type': 5 
+            }],
+             'num_zoom_levels': -1})
 
         # Remove example Projects:
         demo_project=Project.objects.get(title='Default Project')
@@ -47,24 +49,28 @@ class Command(BaseCommand):
         demo_project=Project.objects.get(title='Focussed Ion Beam (FIB)')
         demo_project.delete()
         
-        # Make sure that project and its stacks exist, and are
+        # Make sure that each project and its stacks exist, and are
         # linked via ProjectStack:
 
         for project_title in projects:
             project_object, _ = Project.objects.get_or_create(
                 title=project_title)
             for stack_dict in projects[project_title]['stacks']:
-                try:
-                    stack = Stack.objects.get(
-                        title=stack_dict['title'])
-                except Stack.DoesNotExist:
-                    stack = Stack(**stack_dict)
-                    stack.save()
+                stack, _ = Stack.objects.get_or_create(
+                    title=stack_dict['title'],
+                    defaults={
+                       'dimension': stack_dict['dimension'],
+                       'resolution': stack_dict['resolution'],
+                    })
+                mirrors = list(StackMirror.objects.filter(stack=stack))
+                if not mirrors:
+                    for m in stack_dict['mirrors']:
+                        mirrors.append(StackMirror.objects.create(stack=stack,
+                                title=m['title'], image_base=m['image_base']))
                 ProjectStack.objects.get_or_create(
                     project=project_object,
                     stack=stack)
             projects[project_title]['project_object'] = project_object
-            # Add permission to the anonymous user to browse project
-            assign_perm('can_browse', anon_user, project_object)
+
 
         
