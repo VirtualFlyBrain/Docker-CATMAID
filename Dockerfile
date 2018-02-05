@@ -11,7 +11,7 @@ RUN mkdir /opt/VFB
 
 RUN chmod -R 777 /opt/VFB
 
-RUN /home/scripts/docker/catmaid-entry.sh \
+RUN /home/scripts/docker/catmaid-entry.sh standalone \
     & sleep 10m \
     && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
     && workon catmaid \
