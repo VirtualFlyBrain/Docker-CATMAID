@@ -66,7 +66,9 @@ class Command(BaseCommand):
                 if not mirrors:
                     for m in stack_dict['mirrors']:
                         mirrors.append(StackMirror.objects.create(stack=stack,
-                                title=m['title'], image_base=m['image_base']))
+                                title=m['title'], image_base=m['image_base'], 
+                                file_extension=m['file_extension'], tile_height=m['tile_height'], 
+                                tile_width=m['tile_width'], tile_source_type=m['tile_source_type']))
                 ProjectStack.objects.get_or_create(
                     project=project_object,
                     stack=stack)
