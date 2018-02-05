@@ -44,7 +44,7 @@ class Command(BaseCommand):
         # Remove example Projects:
         demo_project=Project.objects.get(title='Default Project')
         demo_project.delete()
-        demo_project=Project.objects.get(title='Evaluation data set')
+        demo_project=Project.objects.get(title='Classification dummy project')
         demo_project.delete()
         demo_project=Project.objects.get(title='Focussed Ion Beam (FIB)')
         demo_project.delete()
