@@ -3,7 +3,7 @@ FROM catmaid/catmaid
 #swapping to bash 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh && rm /bin/sh.distrib && ln -s /bin/bash /bin/sh.distrib
 
-ENV DJANGO_SETTINGS_MODULE="mysite.mysite.settings"
+ENV DJANGO_SETTINGS_MODULE="mysite.settings"
 
 COPY supervisor-catmaid.conf /etc/supervisor/conf.d/supervisor-catmaid.conf
 
