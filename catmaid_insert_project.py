@@ -8,7 +8,7 @@ from guardian.shortcuts import assign_perm
 from guardian.utils import get_anonymous_user
 
 class Command(BaseCommand):
-    help = "Create L1EM project in CATMAID"
+    help = "Create FAFB project in CATMAID"
 
     def add_arguments(self, parser):
         parser.add_argument('--user', dest='user_id', required=True,
