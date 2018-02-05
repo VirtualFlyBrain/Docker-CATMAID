@@ -1,2 +1,2 @@
 # Docker-CATMAID
-Server loaded with L1EM data
+Server loaded with FAFB data
