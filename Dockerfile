@@ -1,9 +1,7 @@
-FROM catmaid/catmaid
+FROM catmaid/catmaid-standalone
 
 #swapping to bash 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh && rm /bin/sh.distrib && ln -s /bin/bash /bin/sh.distrib
-
-ENV DJANGO_SETTINGS_MODULE="mysite.settings"
 
 COPY supervisor-catmaid.conf /etc/supervisor/conf.d/supervisor-catmaid.conf
 
@@ -19,8 +17,8 @@ COPY init.sh /opt/VFB/init.sh
 
 RUN chmod -R 777 /opt/VFB
 
-RUN service postgresql start \
-    && sleep 10m \
+RUN /home/scripts/docker/catmaid-entry.sh \
+    & sleep 10m \
     && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
     && workon catmaid \
     && cd /home/django/projects \
@@ -28,4 +26,3 @@ RUN service postgresql start \
     && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
     && python manage.py catmaid_insert_project --user=1
 
-ENTRYPOINT ["/bin/bash", "-c", "/opt/VFB/init.sh"]
