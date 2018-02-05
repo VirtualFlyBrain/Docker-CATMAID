@@ -3,17 +3,11 @@ FROM catmaid/catmaid-standalone
 #swapping to bash 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh && rm /bin/sh.distrib && ln -s /bin/bash /bin/sh.distrib
 
-COPY supervisor-catmaid.conf /etc/supervisor/conf.d/supervisor-catmaid.conf
-
 COPY catmaid_insert_project.py /home/django/applications/catmaid/management/commands/catmaid_insert_project.py
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
 RUN mkdir /opt/VFB
-
-COPY nginx-catmaid.conf /etc/nginx/sites-enabled/
-
-COPY init.sh /opt/VFB/init.sh 
 
 RUN chmod -R 777 /opt/VFB
 
