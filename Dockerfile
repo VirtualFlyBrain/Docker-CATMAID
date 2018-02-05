@@ -11,7 +11,7 @@ RUN mkdir /opt/VFB
 
 RUN chmod -R 777 /opt/VFB
 
-RUN /home/scripts/docker/catmaid-entry.sh standalone \
+RUN /home/scripts/docker/catmaid-entry.sh platform \
     & sleep 10m \
     && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
     && workon catmaid \
@@ -20,3 +20,4 @@ RUN /home/scripts/docker/catmaid-entry.sh standalone \
     && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
     && python manage.py catmaid_insert_project --user=1
 
+CMD ["standalone"]
