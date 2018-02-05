@@ -1,4 +1,4 @@
-FROM catmaid/catmaid:stable
+FROM catmaid/catmaid
 
 #swapping to bash 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh && rm /bin/sh.distrib && ln -s /bin/bash /bin/sh.distrib
