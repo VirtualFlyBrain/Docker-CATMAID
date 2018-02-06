@@ -42,6 +42,16 @@ class Command(BaseCommand):
              'num_zoom_levels': -1})
 
         # Remove example Projects:
+        demos = StackMirror.objects.all()
+        for demo_stack in demos:
+            demo_stack.delete()
+        
+        # Remove example Projects:
+        demos = Stack.objects.all()
+        for demo_stack in demos:
+            demo_stack.delete()
+        
+        # Remove example Projects:
         demos = Project.objects.all()
         for demo_project in demos:
             demo_project.delete()
