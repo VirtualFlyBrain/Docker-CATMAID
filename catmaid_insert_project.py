@@ -39,7 +39,7 @@ class Command(BaseCommand):
                 'tile_width': 1024,
                 'tile_source_type': 5 
             }],
-             'num_zoom_levels': -1})
+             'num_zoom_levels': 8})
 
         # Remove example Projects:
         demos = StackMirror.objects.all()
