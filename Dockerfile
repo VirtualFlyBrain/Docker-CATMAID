@@ -7,9 +7,13 @@ COPY catmaid_insert_project.py /home/django/applications/catmaid/management/comm
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
+COPY init.sh /opt/VFB/init.sh
+
 RUN mkdir /opt/VFB
 
 RUN chmod -R 777 /opt/VFB
+
+RUN chmod +x /opt/VFB/init.sh
 
 RUN /home/scripts/docker/catmaid-entry.sh standalone \
     & sleep 10m \
@@ -20,4 +24,4 @@ RUN /home/scripts/docker/catmaid-entry.sh standalone \
     && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
     && python manage.py catmaid_insert_project --user=1
 
-CMD ["standalone"]
+ENTRYPOINT ["/opt/VFB/init.sh"]
