@@ -4,4 +4,4 @@
 service postgresql start
 
 # start CATMAID
-supervisord -n
+/home/scripts/docker/catmaid-entry.sh standalone
