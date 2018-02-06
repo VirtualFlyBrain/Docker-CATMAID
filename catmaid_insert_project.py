@@ -70,6 +70,7 @@ class Command(BaseCommand):
                     project=project_object,
                     stack=stack)
             projects[project_title]['project_object'] = project_object
-
+            # Add permission to the anonymous user to browse project
+            assign_perm('can_browse', anon_user, project_object)
 
         
