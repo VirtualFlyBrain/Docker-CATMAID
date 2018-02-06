@@ -42,12 +42,9 @@ class Command(BaseCommand):
              'num_zoom_levels': -1})
 
         # Remove example Projects:
-        demo_project=Project.objects.get(title='Default Project')
-        demo_project.delete()
-        demo_project=Project.objects.get(title='Classification dummy project')
-        demo_project.delete()
-        demo_project=Project.objects.get(title='Focussed Ion Beam (FIB)')
-        demo_project.delete()
+        demos = Project.objects.all()
+        for demo_project in demos:
+            demo_project.delete()
         
         # Make sure that each project and its stacks exist, and are
         # linked via ProjectStack:
