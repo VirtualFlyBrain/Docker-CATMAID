@@ -7,9 +7,9 @@ COPY catmaid_insert_project.py /home/django/applications/catmaid/management/comm
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
-COPY init.sh /opt/VFB/init.sh
+RUN mkdir -p /opt/VFB
 
-RUN mkdir /opt/VFB
+COPY init.sh /opt/VFB/init.sh
 
 RUN chmod -R 777 /opt/VFB
 
