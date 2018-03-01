@@ -25,13 +25,4 @@ RUN chmod -R 777 /opt/VFB
 
 RUN chmod +x /opt/VFB/*.sh
 
-RUN /home/scripts/docker/catmaid-entry.sh standalone \
-    & sleep 10m \
-    && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
-    && workon catmaid \
-    && cd /home/django/projects \
-    && ls -l ./mysite/ \
-    && cat /home/scripts/docker/modify_superuser.py | python manage.py shell \
-    && python manage.py catmaid_insert_project --user=1
-
 ENTRYPOINT ["/opt/VFB/init.sh"]
