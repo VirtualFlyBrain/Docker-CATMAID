@@ -13,10 +13,11 @@ COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 RUN mkdir -p /opt/VFB
 
 COPY init.sh /opt/VFB/init.sh
+COPY backup.sh /opt/VFB/backup.sh
 
 RUN chmod -R 777 /opt/VFB
 
-RUN chmod +x /opt/VFB/init.sh
+RUN chmod +x /opt/VFB/*.sh
 
 RUN /home/scripts/docker/catmaid-entry.sh standalone \
     & sleep 10m \
