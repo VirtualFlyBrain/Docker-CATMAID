@@ -1,6 +1,11 @@
 FROM catmaid/catmaid-standalone
 
-ENV PGPASSWORD=catmaid_password
+
+ENV DB_USER=catmaid_user
+ENV DB_PASS=catmaid_password
+ENV PGPASSWORD=${DB_PASS}
+ENV DB_NAME=catmaid
+ENV CM_EXAMPLE_PROJECTS=false
 VOLUME /backup
 
 #swapping to bash 
@@ -24,5 +29,13 @@ COPY backup.sh /opt/VFB/backup.sh
 RUN chmod -R 777 /opt/VFB
 
 RUN chmod +x /opt/VFB/*.sh
+
+RUN /home/scripts/docker/catmaid-entry.sh standalone \
+    & sleep 10m \
+    && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
+    && workon catmaid \
+    && cd /home/django/projects \
+    && ls -l ./mysite/ \
+    && cat /home/scripts/docker/modify_superuser.py | python manage.py shell
 
 ENTRYPOINT ["/opt/VFB/init.sh"]
