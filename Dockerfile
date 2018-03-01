@@ -14,6 +14,8 @@ COPY catmaid_insert_project.py /home/django/applications/catmaid/management/comm
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
+RUN sed -i '1s/^/local\tall\tall\t\ttrust\n/' /etc/postgresql/9.6/main/pg_hba.conf
+
 RUN mkdir -p /opt/VFB
 
 COPY init.sh /opt/VFB/init.sh
