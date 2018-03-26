@@ -31,6 +31,9 @@ RUN chmod -R 777 /opt/VFB
 
 RUN chmod +x /opt/VFB/*.sh
 
+#Temp version fix:
+RUN grep -rli '/etc/postgresql/9.6/main/' /home/* | xargs -i@ sed -i 's|/etc/postgresql/9.6/main/|/etc/postgresql/10/main/|g' @
+
 RUN /home/scripts/docker/catmaid-entry.sh standalone \
     & sleep 10m \
     && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
