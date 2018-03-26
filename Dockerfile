@@ -6,6 +6,7 @@ ENV DB_PASS=catmaid_password
 ENV PGPASSWORD=${DB_PASS}
 ENV DB_NAME=catmaid
 ENV CM_EXAMPLE_PROJECTS=false
+ENV DB_CONF_FILE=$(find /etc/ -name 'pg_hba.conf')
 VOLUME /backup
 
 #swapping to bash 
@@ -19,7 +20,7 @@ COPY catmaid_insert_project.py /home/django/applications/catmaid/management/comm
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
-RUN sed -i '1s/^/local\tall\tall\t\ttrust\n/' $(find /etc/ -name 'pg_hba.conf')
+RUN sed -i '1s/^/local\tall\tall\t\ttrust\n/' $DB_CONF_FILE
 
 RUN mkdir -p /opt/VFB
 
