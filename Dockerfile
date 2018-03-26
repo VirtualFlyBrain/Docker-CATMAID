@@ -32,7 +32,7 @@ RUN chmod -R 777 /opt/VFB
 
 RUN chmod +x /opt/VFB/*.sh
 
-RUN sed -i "s/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE.*/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=${IMPORTED_SKELETON_FILE_MAXIMUM_SIZE}/g"/home/django/projects/mysite/settings_base.py
+RUN sed -i "s/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE.*/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=${IMPORTED_SKELETON_FILE_MAXIMUM_SIZE}/g" /home/django/projects/mysite/settings_base.py
 
 #Temp version fix:
 RUN grep -rli '/etc/postgresql/9.6/main/' /home/* | xargs -i@ sed -i 's|/etc/postgresql/9.6/main/|/etc/postgresql/10/main/|g' @
