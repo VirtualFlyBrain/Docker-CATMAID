@@ -21,6 +21,8 @@ COPY catmaid_insert_project.py /home/django/applications/catmaid/management/comm
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
+COPY nginx-catmaid.conf /etc/nginx/sites-enabled/nginx-catmaid.conf
+
 RUN echo "$(find /etc/ -name 'pg_hba.conf')" && sed -i '1s/^/local\tall\tall\t\ttrust\n/' $(find /etc/ -name 'pg_hba.conf')
 
 RUN mkdir -p /opt/VFB
