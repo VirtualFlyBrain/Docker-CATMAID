@@ -8,5 +8,10 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   python /home/scripts/database/revert-database.py /backup/*.bz2
 fi
 
+echo 'START OF LOG' >> /var/log/nginx/error.log
+# echo 'START OF LOG' >> /var/log/nginx/access.log
+tail -f --retry /var/log/nginx/error.log 
+# tail -f --retry /var/log/nginx/access.log
+
 # start CATMAID
 /home/scripts/docker/catmaid-entry.sh standalone
