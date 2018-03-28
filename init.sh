@@ -10,8 +10,8 @@ fi
 
 echo 'START OF LOG' >> /var/log/nginx/error.log
 # echo 'START OF LOG' >> /var/log/nginx/access.log
-tail -f --retry /var/log/nginx/error.log 
-# tail -f --retry /var/log/nginx/access.log
+tail -F --retry /var/log/nginx/error.log &
+# tail -F --retry /var/log/nginx/access.log &
 
 # start CATMAID
 /home/scripts/docker/catmaid-entry.sh standalone
