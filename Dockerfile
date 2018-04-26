@@ -8,7 +8,6 @@ ENV DB_NAME=catmaid
 ENV CM_EXAMPLE_PROJECTS=false
 ENV DB_CONF_FILE=/etc/postgresql/10/main/postgresql.conf
 ENV IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=16777216
-ENV INSTANCE_MEMORY=65000
 VOLUME /backup
 
 #swapping to bash 
@@ -47,5 +46,7 @@ RUN /home/scripts/docker/catmaid-entry.sh standalone \
     && cd /home/django/projects \
     && ls -l ./mysite/ \
     && cat /home/scripts/docker/modify_superuser.py | python manage.py shell
+
+ENV INSTANCE_MEMORY=65000
 
 ENTRYPOINT ["/opt/VFB/init.sh"]
