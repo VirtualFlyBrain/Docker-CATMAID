@@ -38,6 +38,8 @@ RUN sed -i "s/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE.*/IMPORTED_SKELETON_FILE_MAXIM
 
 RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" /etc/postgresql/10/main/postgresql.conf
 
+RUN echo -e "\nhost  all  all 0.0.0.0/0 md5\n" >> /etc/postgresql/10/main/pg_hba.conf
+
 EXPOSE 5432
 
 RUN /home/scripts/docker/catmaid-entry.sh standalone \
