@@ -17,6 +17,10 @@ COPY init.sh /opt/VFB/init.sh
 
 RUN chmod -R 777 /opt/VFB
 
+RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'" /etc/postgresql/10/main/postgresql.conf
+
+EXPOSE 5432
+
 RUN service postgresql start \
     && sleep 10m \
     && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
