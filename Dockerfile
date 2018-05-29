@@ -36,7 +36,7 @@ RUN chmod +x /opt/VFB/*.sh
 
 RUN sed -i "s/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE.*/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=${IMPORTED_SKELETON_FILE_MAXIMUM_SIZE}/g" /home/django/projects/mysite/settings_base.py
 
-RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'" /etc/postgresql/10/main/postgresql.conf
+RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" /etc/postgresql/10/main/postgresql.conf
 
 EXPOSE 5432
 
