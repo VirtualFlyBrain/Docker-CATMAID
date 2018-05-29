@@ -36,8 +36,9 @@ RUN chmod +x /opt/VFB/*.sh
 
 RUN sed -i "s/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE.*/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=${IMPORTED_SKELETON_FILE_MAXIMUM_SIZE}/g" /home/django/projects/mysite/settings_base.py
 
-#Temp version fix:
-RUN grep -rli '/etc/postgresql/9.6/main/' /home/* | xargs -i@ sed -i 's|/etc/postgresql/9.6/main/|/etc/postgresql/10/main/|g' @
+RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'" /etc/postgresql/10/main/postgresql.conf
+
+EXPOSE 5432
 
 RUN /home/scripts/docker/catmaid-entry.sh standalone \
     & sleep 10m \
