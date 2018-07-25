@@ -7,7 +7,8 @@ ENV PGPASSWORD=${DB_PASS}
 ENV DB_NAME=catmaid
 ENV CM_EXAMPLE_PROJECTS=false
 ENV DB_CONF_FILE=/etc/postgresql/10/main/postgresql.conf
-ENV IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=16777216
+ENV CM_IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=16777216
+
 VOLUME /backup
 
 #swapping to bash 
@@ -33,8 +34,6 @@ COPY backup.sh /opt/VFB/backup.sh
 RUN chmod -R 777 /opt/VFB
 
 RUN chmod +x /opt/VFB/*.sh
-
-RUN sed -i "s/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE.*/IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=${IMPORTED_SKELETON_FILE_MAXIMUM_SIZE}/g" /home/django/projects/mysite/settings_base.py
 
 RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" /etc/postgresql/10/main/postgresql.conf
 
