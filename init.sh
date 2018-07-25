@@ -14,4 +14,21 @@ tail -F --retry /var/log/nginx/error.log &
 # tail -F --retry /var/log/nginx/access.log &
 
 # start CATMAID
-/home/scripts/docker/catmaid-entry.sh standalone
+/home/scripts/docker/catmaid-entry.sh standalone &
+
+# migrate DB
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+workon catmaid
+cd /home/django/projects
+python manage.py makemigrations catmaid
+python manage.py migrate
+
+echo 'Start of Service' >> /var/log/postgresql/postgresql-10-main.log
+echo 'Start of Service' >> /var/log/nginx/error.log
+echo 'Start of Service' >> /var/log/nginx/access.log
+
+
+tail -F /var/log/nginx/error.log >&2 &
+tail -F /var/log/nginx/access.log &
+
+tail -F /var/log/postgresql/postgresql-10-main.log
