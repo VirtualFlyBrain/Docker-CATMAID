@@ -18,8 +18,6 @@ RUN apt-get -y -q update && apt-get -y -q install python-yaml python-psycopg2
 
 RUN echo -e "host: localhost\nport: 5432\ndatabase: catmaid\nusername: catmaid_user\npassword: catmaid_password" > ~/.catmaid-db
 
-COPY catmaid_insert_project.py /home/django/applications/catmaid/management/commands/catmaid_insert_project.py
-
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
 COPY nginx-catmaid.conf /home/scripts/docker/nginx-catmaid.conf
