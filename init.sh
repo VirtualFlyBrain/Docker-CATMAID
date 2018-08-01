@@ -3,12 +3,16 @@
 # Start DB early 
 service postgresql start
 
+
+
 # Check for recovery DB
 if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
+  sleep 1m
   source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
   workon catmaid
   cd /home/django/projects
   python /home/scripts/database/revert-database.py /backup/*.bz2
+  sleep 1m
 fi
 
 echo 'START OF LOG' >> /var/log/nginx/error.log
