@@ -20,6 +20,7 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
   workon catmaid
   cd /home/django/projects
+  python manage.py catmaid_rebuild_edge_table
   python manage.py makemigrations catmaid
   python manage.py migrate
 fi
