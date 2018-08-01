@@ -19,7 +19,7 @@ echo 'Start of Service' >> /var/log/nginx/access.log
 
 # Check for recovery DB
 if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
-  python /home/scripts/database/revert-database.py /backup/*.bz2
+  sleep 1m && python /home/scripts/database/revert-database.py /backup/*.bz2 &
 fi
 
 tail -F /var/log/nginx/error.log >&2 &
