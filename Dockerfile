@@ -9,6 +9,7 @@ ENV CM_EXAMPLE_PROJECTS=false
 ENV DB_CONF_FILE=/etc/postgresql/10/main/postgresql.conf
 ENV CM_IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=16777216
 ENV CM_CSRF_TRUSTED_ORIGINS="['.virtualflybrain.org']"
+ENV CM_DEBUG=True
 
 VOLUME /backup
 
@@ -40,7 +41,7 @@ RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" /etc/pos
 
 RUN echo -e "\nhost  all  all 0.0.0.0/0 md5\n" >> /etc/postgresql/10/main/pg_hba.conf
 
-RUN echo -e "\nDEBUG = True\nALLOWED_HOSTS = ['*']\n" >> /home/django/projects/mysite/settings.py
+RUN sed -i "s|DEBUG = *.|DEBUG = ${CM_DEBUG}|g" /home/django/projects/mysite/settings.py
 
 EXPOSE 5432
 
