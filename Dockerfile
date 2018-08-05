@@ -40,6 +40,8 @@ RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" /etc/pos
 
 RUN echo -e "\nhost  all  all 0.0.0.0/0 md5\n" >> /etc/postgresql/10/main/pg_hba.conf
 
+RUN echo -e "\nDEBUG = True\nALLOWED_HOSTS = ['*']\n" >> /home/django/projects/mysite/settings.py
+
 EXPOSE 5432
 
 RUN /home/scripts/docker/catmaid-entry.sh standalone \
