@@ -11,8 +11,6 @@ ENV CM_IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=16777216
 
 VOLUME /backup
 
-RUN echo -e "host: localhost\nport: 5432\ndatabase: catmaid\nusername: catmaid_user\npassword: catmaid_password" > ~/.catmaid-db
-
 RUN sed -i "s|server {|server {\n    client_max_body_size    20M;\n    proxy_connect_timeout   600;\n    proxy_send_timeout      600;\n    proxy_read_timeout      600;\n    send_timeout            600;|g" /home/scripts/docker/nginx-catmaid.conf
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
