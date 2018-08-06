@@ -20,7 +20,7 @@ RUN echo -e "host: localhost\nport: 5432\ndatabase: catmaid\nusername: catmaid_u
 
 COPY catmaid_insert_project.py /home/django/applications/catmaid/management/commands/catmaid_insert_project.py
 
-COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
+COPY modify_superuser.py /opt/VFB/modify_superuser.py
 
 COPY nginx-catmaid.conf /home/scripts/docker/nginx-catmaid.conf
 
@@ -47,7 +47,7 @@ RUN /home/scripts/docker/catmaid-entry.sh standalone \
     && workon catmaid \
     && cd /home/django/projects \
     && ls -l ./mysite/ \
-    && cat /home/scripts/docker/modify_superuser.py | python manage.py shell
+    && cat /opt/VFB/modify_superuser.py | python manage.py shell
 
 ENV INSTANCE_MEMORY=65000
 
