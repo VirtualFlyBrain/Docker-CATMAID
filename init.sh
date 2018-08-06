@@ -26,7 +26,7 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
 fi
 
 # set Admin Password
-cat /home/scripts/docker/modify_superuser.py | python manage.py shell
+cat /opt/VFB/modify_superuser.py | python manage.py shell
 
 # set Debug
 sed -i "s|DEBUG = *.|DEBUG = ${CM_DEBUG}|g" /home/django/projects/mysite/settings.py
