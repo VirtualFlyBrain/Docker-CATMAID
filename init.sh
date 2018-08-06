@@ -6,13 +6,6 @@
 # Start DB
 service postgresql start
 
-# start CATMAID
-/bin/bash /home/scripts/docker/catmaid-entry.sh standalone &
-
-echo 'Start of Service' >> /var/log/postgresql/postgresql-10-main.log
-echo 'Start of Service' >> /var/log/nginx/error.log
-echo 'Start of Service' >> /var/log/nginx/access.log
-
 source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 workon catmaid
 cd /home/django/projects
@@ -24,6 +17,13 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   sleep 1m
   python /home/scripts/database/revert-database.py /backup/*.bz2
 fi
+
+# start CATMAID
+/bin/bash /home/scripts/docker/catmaid-entry.sh standalone &
+
+echo 'Start of Service' >> /var/log/postgresql/postgresql-10-main.log
+echo 'Start of Service' >> /var/log/nginx/error.log
+echo 'Start of Service' >> /var/log/nginx/access.log
 
 # set Admin Password
 cat /opt/VFB/modify_superuser.py | python manage.py shell
