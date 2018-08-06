@@ -3,6 +3,9 @@
 # set DB password
 echo -e "host: localhost\nport: 5432\ndatabase: ${DB_NAME}\nusername: ${DB_USER}\npassword: ${DB_PASS}" > ~/.catmaid-db
 
+# set Debug
+sed -i "s|DEBUG = *.|DEBUG = ${CM_DEBUG}|g" /home/django/projects/mysite/settings.py
+
 # Start DB early 
 service postgresql start
 
@@ -27,9 +30,6 @@ fi
 
 # set Admin Password
 cat /home/scripts/docker/modify_superuser.py | python manage.py shell
-
-# set Debug
-sed -i "s|DEBUG = *.|DEBUG = ${CM_DEBUG}|g" /home/django/projects/mysite/settings.py
 
 tail -F /var/log/nginx/error.log >&2 &
 tail -F /var/log/nginx/access.log &
