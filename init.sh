@@ -12,10 +12,7 @@ cd /home/django/projects
 
 # Check for recovery DB
 if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
-  sleep 1m
-  python /home/scripts/database/revert-database.py /backup/*.bz2
-  sleep 1m
-  python /home/scripts/database/revert-database.py /backup/*.bz2
+  /bin/bash /home/scripts/docker/catmaid-entry.sh python /home/scripts/database/revert-database.py /backup/*.bz2
 fi
 
 # start CATMAID
