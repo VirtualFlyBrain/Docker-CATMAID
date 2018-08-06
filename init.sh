@@ -13,6 +13,7 @@ cd /home/django/projects
 # Check for recovery DB
 if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   sleep 20s
+  createuser -U postgres --no-password -d -s ${DB_USER}
   bunzip2 -c /backup/*.bz2 | pg_restore --create --clean -U postgres --no-password -d postgres
   sleep 1m
 fi
