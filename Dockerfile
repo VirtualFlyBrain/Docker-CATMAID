@@ -16,7 +16,7 @@ RUN sed -i "s|server {|server {\n    client_max_body_size    20M;\n    proxy_con
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
-RUN echo "$(find /etc/ -name 'pg_hba.conf')" && sed -i '1s/^/local\tall\tall\t\ttrust\n/' $(find /etc/ -name 'pg_hba.conf')
+RUN echo "$(find /etc/postgresql/ -name 'pg_hba.conf')" && sed -i '1s/^/local\tall\tall\t\ttrust\n/' $(find /etc/postgresql/ -name 'pg_hba.conf')
 
 RUN mkdir -p /opt/VFB
 
@@ -27,9 +27,9 @@ RUN chmod -R 777 /opt/VFB
 
 RUN chmod +x /opt/VFB/*.sh
 
-RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" /etc/postgresql/10/main/postgresql.conf
+RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" $(find /etc/postgresql/ -name 'postgresql.conf')
 
-RUN echo -e "\nhost  all  all 0.0.0.0/0 md5\n" >> /etc/postgresql/10/main/pg_hba.conf
+RUN echo -e "\nhost  all  all 0.0.0.0/0 md5\n" >> $(find /etc/postgresql/ -name 'pg_hba.conf')
 
 EXPOSE 5432
 
