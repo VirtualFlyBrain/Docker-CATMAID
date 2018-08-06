@@ -8,6 +8,7 @@ ENV DB_NAME=catmaid
 ENV CM_EXAMPLE_PROJECTS=false
 ENV DB_CONF_FILE=/etc/postgresql/10/main/postgresql.conf
 ENV CM_IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=16777216
+ENV CM_DEBUG=False
 
 VOLUME /backup
 
