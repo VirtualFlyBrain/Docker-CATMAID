@@ -16,7 +16,7 @@ RUN sed -i "s|server {|server {\n    client_max_body_size    20M;\n    proxy_con
 
 COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
-RUN echo "$(find /etc/postgresql/ -name 'pg_hba.conf')" && sed -i 's/^/local\tall\tall\t\ttrust\n/' $(find /etc/postgresql/ -name 'pg_hba.conf')
+RUN echo "$(find /etc/postgresql/ -name 'pg_hba.conf')" && sed -i 's|^|local\tall\tall\t\ttrust\n|' $(find /etc/postgresql/ -name 'pg_hba.conf')
 
 RUN mkdir -p /opt/VFB
 
