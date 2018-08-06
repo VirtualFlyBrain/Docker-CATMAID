@@ -29,7 +29,7 @@ RUN chmod +x /opt/VFB/*.sh
 
 RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" $(find /etc/postgresql/ -name 'postgresql.conf')
 
-RUN echo -e "\nhost  all  all 0.0.0.0/0 md5\n" >> $(find /etc/postgresql/ -name 'pg_hba.conf')
+RUN /bin/bash echo -e "\nhost  all  all 0.0.0.0/0 md5\n" >> $(find /etc/postgresql/ -name 'pg_hba.conf')
 
 EXPOSE 5432
 
