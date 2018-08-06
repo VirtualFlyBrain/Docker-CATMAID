@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set DB password
-/bin/bash echo -e "host: localhost\nport: 5432\ndatabase: ${DB_NAME}\nusername: ${DB_USER}\npassword: ${DB_PASS}" > ~/.catmaid-db
+/bin/echo -e "host: localhost\nport: 5432\ndatabase: ${DB_NAME}\nusername: ${DB_USER}\npassword: ${DB_PASS}" > ~/.catmaid-db
 
 # Start DB
 service postgresql start
