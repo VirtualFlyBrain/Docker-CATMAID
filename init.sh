@@ -6,7 +6,7 @@ echo -e "host: localhost\nport: 5432\ndatabase: ${DB_NAME}\nusername: ${DB_USER}
 # set Debug
 sed -i "s|DEBUG = *.|DEBUG = ${CM_DEBUG}|g" /home/django/projects/mysite/settings.py
 
-# Start DB early 
+# Start DB
 service postgresql start
 
 # start CATMAID
