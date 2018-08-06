@@ -10,7 +10,7 @@ sed -i "s|DEBUG = *.|DEBUG = ${CM_DEBUG}|g" /home/django/projects/mysite/setting
 service postgresql start
 
 # start CATMAID
-/home/scripts/docker/catmaid-entry.sh standalone &
+/bin/bash /home/scripts/docker/catmaid-entry.sh standalone &
 
 echo 'Start of Service' >> /var/log/postgresql/postgresql-10-main.log
 echo 'Start of Service' >> /var/log/nginx/error.log
