@@ -14,7 +14,7 @@ VOLUME /backup
 
 RUN sed -i "s|server {|server {\n    client_max_body_size    20M;\n    proxy_connect_timeout   600;\n    proxy_send_timeout      600;\n    proxy_read_timeout      600;\n    send_timeout            600;|g" /home/scripts/docker/nginx-catmaid.conf
 
-COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
+COPY modify_superuser.py /opt/VFB/modify_superuser.py
 
 RUN echo "$(find /etc/postgresql/ -name 'pg_hba.conf')" && sed -i 's|^|local\tall\tall\t\ttrust\n|' $(find /etc/postgresql/ -name 'pg_hba.conf')
 
