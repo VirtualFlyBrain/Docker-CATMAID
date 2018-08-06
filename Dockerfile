@@ -13,9 +13,9 @@ VOLUME /backup
 
 RUN echo -e "host: localhost\nport: 5432\ndatabase: catmaid\nusername: catmaid_user\npassword: catmaid_password" > ~/.catmaid-db
 
-COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
+RUN sed -i "s|server {|server {\n    client_max_body_size    20M;\n    proxy_connect_timeout   600;\n    proxy_send_timeout      600;\n    proxy_read_timeout      600;\n    send_timeout            600;|g" /home/scripts/docker/nginx-catmaid.conf
 
-COPY nginx-catmaid.conf /home/scripts/docker/nginx-catmaid.conf
+COPY modify_superuser.py /home/scripts/docker/modify_superuser.py
 
 RUN echo "$(find /etc/ -name 'pg_hba.conf')" && sed -i '1s/^/local\tall\tall\t\ttrust\n/' $(find /etc/ -name 'pg_hba.conf')
 
@@ -33,14 +33,6 @@ RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" /etc/pos
 RUN echo -e "\nhost  all  all 0.0.0.0/0 md5\n" >> /etc/postgresql/10/main/pg_hba.conf
 
 EXPOSE 5432
-
-RUN /home/scripts/docker/catmaid-entry.sh standalone \
-    & sleep 10m \
-    && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh \
-    && workon catmaid \
-    && cd /home/django/projects \
-    && ls -l ./mysite/ \
-    && cat /home/scripts/docker/modify_superuser.py | python manage.py shell
 
 ENV INSTANCE_MEMORY=65000
 
