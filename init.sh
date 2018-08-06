@@ -12,7 +12,7 @@ cd /home/django/projects
 
 # Check for recovery DB
 if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
-  /bin/bash /home/scripts/docker/catmaid-entry.sh python /home/scripts/database/revert-database.py /backup/*.bz2
+  bunzip2 -c /backup/*.bz2 | psql -U postgres --no-password ${DB_NAME}
 fi
 
 # start CATMAID
