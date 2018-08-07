@@ -10,7 +10,7 @@ ENV DB_CONF_FILE=/etc/postgresql/10/main/postgresql.conf
 ENV CM_IMPORTED_SKELETON_FILE_MAXIMUM_SIZE=16777216
 ENV CM_DEBUG=False
 ENV CM_NODE_LIMIT=15000
-ENV CM_NODE_PROVIDERS="[('cached_msgpack', { 'enabled': True, 'project_id': 1, 'min_width': 11100, 'min_heigth': 10000, 'orientation': 'xy', 'step': 35.0 }), 'postgis3d']"
+ENV CM_NODE_PROVIDERS=[('cached_msgpack', { 'enabled': True, 'project_id': 1, 'min_width': 11100, 'min_heigth': 10000, 'orientation': 'xy', 'step': 35.0 }), 'postgis3d']
 
 VOLUME /backup
 
