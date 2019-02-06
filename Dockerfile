@@ -33,6 +33,8 @@ RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" $(find /
 
 RUN /bin/echo -e "\nhost\tall\tall\t0.0.0.0/0\tmd5\nlocal\treplication\troot\tpeer\nhost\treplication\troot\t10.0.0.1/32\tmd5\n" >> $(find /etc/postgresql/ -name 'pg_hba.conf')
 
+RUN apt-get update -y && apt-get install -y aria2
+
 EXPOSE 5432
 
 ENV INSTANCE_MEMORY=65000
