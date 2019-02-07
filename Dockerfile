@@ -20,6 +20,8 @@ COPY modify_superuser.py /opt/VFB/modify_superuser.py
 
 RUN echo "$(find /etc/postgresql/ -name 'pg_hba.conf')" && sed -i 's|^|local\tall\tall\t\ttrust\n|' $(find /etc/postgresql/ -name 'pg_hba.conf')
 
+RUN pip install h5py
+
 RUN mkdir -p /opt/VFB
 
 COPY init.sh /opt/VFB/init.sh
