@@ -1,4 +1,4 @@
-FROM catmaid/catmaid-standalone
+FROM rcourt/catmaid-standalone:dev
 
 
 ENV DB_USER=catmaid_user
