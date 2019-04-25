@@ -3,6 +3,9 @@
 # set DB password
 /bin/echo -e "host: localhost\nport: 5432\ndatabase: ${DB_NAME}\nusername: ${DB_USER}\npassword: ${DB_PASS}" > ~/.catmaid-db
 
+# initiate catmaid setup
+/bin/bash /home/scripts/docker/catmaid-entry.sh init_catmaid &
+
 # Start DB
 service postgresql start
 
