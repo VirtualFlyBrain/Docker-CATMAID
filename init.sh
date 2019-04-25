@@ -6,11 +6,6 @@
 # Start DB
 service postgresql start
 
-# initiate catmaid setup
-/bin/bash /home/scripts/docker/catmaid-entry.sh platform &
-
-sleep 1m
-
 source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 workon catmaid
 cd /home/django/projects
@@ -23,7 +18,10 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
 fi
 
 # start CATMAID
-/bin/bash /home/scripts/docker/catmaid-entry.sh standalone &
+# initiate catmaid setup
+/bin/bash /home/scripts/docker/catmaid-entry.sh platform &
+
+sleep 1m
 
 echo 'Start of Service' >> /var/log/postgresql/postgresql-10-main.log
 echo 'Start of Service' >> /var/log/nginx/error.log
