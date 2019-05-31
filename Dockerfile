@@ -29,7 +29,7 @@ RUN chmod +x /opt/VFB/*.sh
 
 RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" $(find /etc/postgresql/ -name 'postgresql.conf')
 
-RUN /bin/echo -e "\nhost\tall\tall\t0.0.0.0/0\tmd5\nlocal\tall\tpostgres\t\ttrust\nlocal\t${DB_NAME}\t${DB_USER}\t\ttrust\nhost\treplication\troot\t10.0.0.1/32\tmd5\n" > $(find /etc/postgresql/ -name 'pg_hba.conf')
+RUN /bin/echo -e "\nhost\tall\tall\t0.0.0.0/0\tmd5\nlocal\tall\tpostgres\t\ttrust\nlocal\t${DB_NAME}\tall\t\ttrust\nhost\treplication\troot\t10.0.0.1/32\tmd5\n" > $(find /etc/postgresql/ -name 'pg_hba.conf')
 
 EXPOSE 5432
 
