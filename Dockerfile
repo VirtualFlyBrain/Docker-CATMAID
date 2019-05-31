@@ -3,7 +3,7 @@ FROM catmaid/catmaid-standalone
 
 ENV DB_USER=catmaid_user
 ENV DB_PASS=catmaid_password
-ENV PGPASSWORD=${DB_PASS}
+ENV PGPASSWORD=catmaid_password
 ENV DB_NAME=catmaid
 ENV CM_EXAMPLE_PROJECTS=false
 ENV DB_CONF_FILE=/etc/postgresql/10/main/postgresql.conf
