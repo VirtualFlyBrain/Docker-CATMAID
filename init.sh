@@ -13,6 +13,7 @@ cd /home/django/projects
 # Check for recovery DB
 if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   sleep 20s
+  psql -U postgres --no-password -c "CREATE USER ${DB_USER} WITH CREATEDB CREATEROLE SUPERUSER PASSWORD '${DB_PASS}';"
   bunzip2 -c /backup/*.bz2 | pg_restore --create --clean -U ${DB_USER} --no-password -d ${DB_NAME}
   sleep 20s
   manage.py catmaid_rebuild_edge_table
