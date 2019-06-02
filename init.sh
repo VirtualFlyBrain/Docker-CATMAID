@@ -21,7 +21,7 @@ fi
 
 # start CATMAID
 # initiate catmaid setup
-/bin/bash /home/scripts/docker/catmaid-entry.sh platform &
+/bin/bash /home/scripts/docker/catmaid-entry.sh standalone &
 
 sleep 1m
 
