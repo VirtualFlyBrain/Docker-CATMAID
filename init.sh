@@ -2,6 +2,7 @@
 
 pip install h5py
 pip install rpy2
+pip install pgmagick
 
 # set DB password
 /bin/echo -e "host: localhost\nport: 5432\ndatabase: ${DB_NAME}\nusername: ${DB_USER}\npassword: ${DB_PASS}" > ~/.catmaid-db
