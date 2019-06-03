@@ -16,8 +16,6 @@ VOLUME /backup
 
 COPY modify_superuser.py /opt/VFB/modify_superuser.py
 
-RUN pip install h5py
-
 RUN mkdir -p /opt/VFB
 
 COPY init.sh /opt/VFB/init.sh
