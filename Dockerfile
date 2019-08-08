@@ -1,9 +1,9 @@
-FROM catmaid/catmaid-standalone
+FROM catmaid/catmaid-standalone:dev
 
 
 ENV DB_USER=catmaid_user
 ENV DB_PASS=catmaid_password
-ENV PGPASSWORD=${DB_PASS}
+ENV PGPASSWORD=catmaid_password
 ENV DB_NAME=catmaid
 ENV CM_EXAMPLE_PROJECTS=false
 ENV DB_CONF_FILE=/etc/postgresql/10/main/postgresql.conf
@@ -14,13 +14,7 @@ ENV CM_NODE_PROVIDERS="[('cached_msgpack', { 'enabled': True, 'project_id': 1, '
 
 VOLUME /backup
 
-RUN sed -i "s|server {|server {\n    client_max_body_size    20M;\n    proxy_connect_timeout   600;\n    proxy_send_timeout      600;\n    proxy_read_timeout      600;\n    send_timeout            600;|g" /home/scripts/docker/nginx-catmaid.conf
-
 COPY modify_superuser.py /opt/VFB/modify_superuser.py
-
-RUN echo "$(find /etc/postgresql/ -name 'pg_hba.conf')" && sed -i 's|^|local\tall\tall\t\ttrust\n|' $(find /etc/postgresql/ -name 'pg_hba.conf')
-
-RUN pip install h5py
 
 RUN mkdir -p /opt/VFB
 
@@ -33,7 +27,9 @@ RUN chmod +x /opt/VFB/*.sh
 
 RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" $(find /etc/postgresql/ -name 'postgresql.conf')
 
-RUN /bin/echo -e "\nhost\tall\tall\t0.0.0.0/0\tmd5\nlocal\treplication\troot\tpeer\nhost\treplication\troot\t10.0.0.1/32\tmd5\n" >> $(find /etc/postgresql/ -name 'pg_hba.conf')
+RUN /bin/echo -e "\nlocal\tall\tpostgres\t\ttrust\nlocal\t${DB_NAME}\tall\t\ttrust\nhost\tall\tall\t0.0.0.0/0\ttrust\nhost\tall\tall\t0.0.0.0/0\tmd5\nhost\treplication\troot\t10.0.0.1/32\tmd5\n" > $(find /etc/postgresql/ -name 'pg_hba.conf')
+
+RUN apt-get update && apt-get install -y r-base aria2
 
 EXPOSE 5432
 

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+pip install h5py
+pip install rpy2
+pip install pgmagick
+pip install pyneuroml
+
 # set DB password
 /bin/echo -e "host: localhost\nport: 5432\ndatabase: ${DB_NAME}\nusername: ${DB_USER}\npassword: ${DB_PASS}" > ~/.catmaid-db
 
@@ -15,6 +20,8 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   sleep 20s
   psql -U postgres --no-password -c "CREATE USER ${DB_USER} WITH CREATEDB CREATEROLE SUPERUSER PASSWORD '${DB_PASS}';"
   bunzip2 -c /backup/*.bz2 | pg_restore --create --clean -U postgres --no-password -d postgres
+  sleep 20s
+  manage.py catmaid_rebuild_edge_table
 fi
 
 # start CATMAID
@@ -30,16 +37,9 @@ echo 'Start of Service' >> /var/log/nginx/access.log
 # set Admin Password
 cat /opt/VFB/modify_superuser.py | python manage.py shell
 
-# set Debug
-sed -i "s|DEBUG = .*|DEBUG = ${CM_DEBUG}|g" /home/django/projects/mysite/settings.py
-
-# setup cache
-source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-workon catmaid
-cd /home/django/projects
-manage.py catmaid_update_cache_tables --from-config
-
 tail -F /var/log/nginx/error.log >&2 &
 tail -F /var/log/nginx/access.log &
+
+/bin/bash /home/scripts/docker/catmaid-entry.sh standalone & 
 
 tail -F /var/log/postgresql/postgresql-10-main.log
