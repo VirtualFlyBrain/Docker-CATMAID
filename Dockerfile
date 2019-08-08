@@ -1,4 +1,4 @@
-FROM catmaid/catmaid-standalone
+FROM rcourt/catmaid-standalone
 
 ENV DB_USER=catmaid_user
 ENV DB_PASS=catmaid_password
