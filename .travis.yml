@@ -3,7 +3,7 @@ services:
   
 script:
   - docker build -t virtualflybrain/catmaid:$TRAVIS_BUILD_ID .
-  - docker run -d --name test -p 80:80 --env=INSTANCE_MEMORY=900 --env=CM_CLIENT_SETTINGS='{"neuron-name-service": {"component_list": [{"id": "skeletonid", "name": "Skeleton ID"}, {"id": "neuronname", "name": "Neuron name"}, {"id": "all-meta", "name": "All annotations annotated with \"neuron name\"", "option": "neuron name"}]}}' --env=CM_FORCE_CLIENT_SETTINGS=true virtualflybrain/catmaid:$TRAVIS_BUILD_ID
+  - docker run -d --name test -p 80:80 --env=INSTANCE_MEMORY=900 --env=CM_CLIENT_SETTINGS='{"neuron-name-service":{"component_list":[{"id":"skeletonid", "name":"Skeleton ID"}, {"id":"neuronname", "name":"Neuron name"}, {"id":"all-meta", "name":"All annotations annotated with \"neuron name\"", "option":"neuron name"}]}}' --env=CM_FORCE_CLIENT_SETTINGS=true virtualflybrain/catmaid:$TRAVIS_BUILD_ID
   - sleep 2m
   - docker logs test
   - curl -sSf http://localhost:80/
