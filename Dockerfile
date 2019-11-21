@@ -18,6 +18,8 @@ RUN mkdir -p /opt/VFB
 COPY init.sh /opt/VFB/init.sh
 COPY backup.sh /opt/VFB/backup.sh
 
+RUN chmod +x /opt/VFB/*.sh
+
 RUN apt-get update && apt-get install -y r-base aria2
 
 EXPOSE 5432
