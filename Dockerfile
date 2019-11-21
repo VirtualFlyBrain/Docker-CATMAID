@@ -20,14 +20,6 @@ RUN mkdir -p /opt/VFB
 COPY init.sh /opt/VFB/init.sh
 COPY backup.sh /opt/VFB/backup.sh
 
-RUN chmod -R 777 /opt/VFB
-
-RUN chmod +x /opt/VFB/*.sh
-
-RUN sed -i "s|#listen_addresses = 'localhost'|listen_addresses = '*'|g" $(find /etc/postgresql/ -name 'postgresql.conf')
-
-RUN /bin/echo -e "\nlocal\tall\tpostgres\t\ttrust\nlocal\t${DB_NAME}\tall\t\ttrust\nhost\tall\tall\t0.0.0.0/0\ttrust\nhost\tall\tall\t0.0.0.0/0\tmd5\nhost\treplication\troot\t10.0.0.1/32\tmd5\n" > $(find /etc/postgresql/ -name 'pg_hba.conf')
-
 RUN apt-get update && apt-get install -y r-base aria2
 
 EXPOSE 5432
