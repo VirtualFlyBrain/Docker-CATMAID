@@ -2,8 +2,14 @@ services:
   - docker
   
 script:
-  - docker build -t test-image:test .
-  - docker run -d --name test -p 80:80 --env=INSTANCE_MEMORY=900 test-image:test
+  - docker build -t virtualflybrain/catmaid:$TRAVIS_BUILD_ID .
+  - docker run -d --name test -p 80:80 --env=INSTANCE_MEMORY=900 virtualflybrain/catmaid:$TRAVIS_BUILD_ID
   - sleep 2m
   - docker logs test
   - curl -sSf http://localhost:80/
+after_success:
+  - if [ $TRAVIS_PULL_REQUEST == false ]; then
+      cd $TRAVIS_BUILD_DIR;
+      docker login -u $DOCKER_USER -p $DOCKER_PASS;
+      docker push virtualflybrain/catmaid:$TRAVIS_BUILD_ID;
+     fi;
