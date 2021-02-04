@@ -1,4 +1,4 @@
-FROM catmaid/catmaid-standalone
+FROM catmaid/catmaid-standalone:dev
 
 ENV DB_USER=catmaid_user
 ENV DB_PASS=catmaid_password
