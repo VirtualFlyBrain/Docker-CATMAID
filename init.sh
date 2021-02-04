@@ -16,7 +16,6 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   psql -U postgres --no-password -c "CREATE USER ${DB_USER} WITH CREATEDB CREATEROLE SUPERUSER PASSWORD '${DB_PASS}';"
   bunzip2 -c /backup/*.bz2 | pg_restore --create --clean -U postgres --no-password -d postgres
   sleep 20s
-  python manage.py catmaid_rebuild_edge_table
 fi
 
 service postgresql restart
