@@ -19,6 +19,9 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   python manage.py catmaid_rebuild_edge_table
 fi
 
+service postgresql restart
+sleep 30s
+
 # start CATMAID
 # initiate catmaid setup
 /bin/bash /home/scripts/docker/catmaid-entry.sh platform &
