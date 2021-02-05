@@ -22,18 +22,24 @@ else
   /bin/bash /home/scripts/docker/catmaid-entry.sh platform &
 fi
 
-sleep 1m
+echo 'Loading finished'
+
+sleep 10s
+
+echo 'Starting Service...'
 
 echo 'Start of Service' >> /var/log/postgresql/postgresql-10-main.log
 echo 'Start of Service' >> /var/log/nginx/error.log
 echo 'Start of Service' >> /var/log/nginx/access.log
 
-# set Admin Password
-cat /opt/VFB/modify_superuser.py | python manage.py shell
-
 tail -F /var/log/nginx/error.log >&2 &
 tail -F /var/log/nginx/access.log &
 
 /bin/bash /home/scripts/docker/catmaid-entry.sh standalone & 
+
+sleep 20s
+
+# set Admin Password
+cat /opt/VFB/modify_superuser.py | python manage.py shell
 
 tail -F /var/log/postgresql/postgresql-10-main.log
