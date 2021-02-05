@@ -16,14 +16,11 @@ if [ $(ls /backup/*.bz2 | wc -l) -eq 1 ]; then
   psql -U postgres --no-password -c "CREATE USER ${DB_USER} WITH CREATEDB CREATEROLE SUPERUSER PASSWORD '${DB_PASS}';"
   bunzip2 -c /backup/*.bz2 | pg_restore --create --clean -U postgres --no-password -d postgres
   sleep 20s
+else
+  # start CATMAID
+  # initiate catmaid setup
+  /bin/bash /home/scripts/docker/catmaid-entry.sh platform &
 fi
-
-service postgresql restart
-sleep 30s
-
-# start CATMAID
-# initiate catmaid setup
-/bin/bash /home/scripts/docker/catmaid-entry.sh platform &
 
 sleep 1m
 
