@@ -1,0 +1,71 @@
+name: Publish Docker image
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+  release:
+    types: [published]
+
+jobs:
+  push_to_registry:
+    name: Build, smoke-test and push to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: virtualflybrain/catmaid
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      - name: Build image (load locally for smoke test)
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: false
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Smoke test
+        run: |
+          set -euo pipefail
+          FIRST_TAG="$(printf '%s\n' "${{ steps.meta.outputs.tags }}" | head -n1)"
+          CM_SETTINGS='{"neuron-name-service":{"component_list":[{"id":"skeletonid","name":"Skeleton ID"},{"id":"neuronname","name":"Neuron name"},{"id":"all-meta","name":"All annotations annotated with \"neuron name\"","option":"neuron name"}]}}'
+          docker run -d --name catmaid-test -p 80:80 \
+            -e INSTANCE_MEMORY=900 \
+            -e CM_CLIENT_SETTINGS="$CM_SETTINGS" \
+            -e CM_FORCE_CLIENT_SETTINGS=true \
+            "$FIRST_TAG"
+          sleep 120
+          docker logs catmaid-test
+          curl -sSf http://localhost:80/ -o /tmp/response.html
+          echo "--- assert GA snippet was injected ---"
+          grep -q 'VFB-GA-INJECTED' /tmp/response.html
+          grep -q "$(docker exec catmaid-test printenv GA_TAG_ID)" /tmp/response.html
+
+      - name: Push image
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
