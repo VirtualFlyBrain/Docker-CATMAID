@@ -32,7 +32,7 @@ RUN chmod -R 777 /opt/VFB
 
 RUN chmod +x /opt/VFB/*.sh
 
-RUN apt-get update && apt-get install -y r-base aria2
+RUN apt-get update && apt-get install -y r-base
 
 ENV INSTANCE_MEMORY=65000
 
