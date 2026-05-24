@@ -35,6 +35,11 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
+      - name: Resolve primary image tag
+        run: |
+          FIRST_TAG="$(printf '%s\n' "${{ steps.meta.outputs.tags }}" | head -n1)"
+          echo "FIRST_TAG=$FIRST_TAG" >> "$GITHUB_ENV"
+
       - name: Build image (load locally for smoke test)
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
@@ -47,7 +52,6 @@ jobs:
       - name: Smoke test
         run: |
           set -euo pipefail
-          FIRST_TAG="$(printf '%s\n' "${{ steps.meta.outputs.tags }}" | head -n1)"
           CM_SETTINGS='{"neuron-name-service":{"component_list":[{"id":"skeletonid","name":"Skeleton ID"},{"id":"neuronname","name":"Neuron name"},{"id":"all-meta","name":"All annotations annotated with \"neuron name\"","option":"neuron name"}]}}'
           docker run -d --name catmaid-test -p 80:80 \
             -e INSTANCE_MEMORY=900 \
@@ -60,6 +64,18 @@ jobs:
           echo "--- assert GA snippet was injected ---"
           grep -q 'VFB-GA-INJECTED' /tmp/response.html
           grep -q "$(docker exec catmaid-test printenv GA_TAG_ID)" /tmp/response.html
+
+      - name: Scan image for known vulnerabilities
+        # Report-only for now (exit-code 0). Flip exit-code to 1 once the
+        # baseline is clean to gate the build on regressions.
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.FIRST_TAG }}
+          format: table
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: '0'
+          vuln-type: os,library
 
       - name: Push image
         if: github.event_name != 'pull_request'
