@@ -32,7 +32,14 @@ RUN chmod -R 777 /opt/VFB
 
 RUN chmod +x /opt/VFB/*.sh
 
-RUN apt-get update && apt-get install -y r-base
+# Upstream catmaid/catmaid-standalone bakes the PostgreSQL Global
+# Development Group (PGDG) apt repo, but PGDG retired focal-pgdg when
+# Ubuntu 20.04 hit standard EOL — its Release file is gone, so apt-get
+# update aborts. Postgres is already installed in the base image, so we
+# just disable the PGDG source before running update.
+RUN rm -f /etc/apt/sources.list.d/pgdg.list /etc/apt/sources.list.d/postgresql.list \
+    && apt-get update \
+    && apt-get install -y r-base
 
 ENV INSTANCE_MEMORY=65000
 
