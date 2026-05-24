@@ -66,16 +66,22 @@ jobs:
           grep -q "$(docker exec catmaid-test printenv GA_TAG_ID)" /tmp/response.html
 
       - name: Scan image for known vulnerabilities
-        # Report-only for now (exit-code 0). Flip exit-code to 1 once the
-        # baseline is clean to gate the build on regressions.
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          image-ref: ${{ env.FIRST_TAG }}
-          format: table
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: '0'
-          vuln-type: os,library
+        # Report-only for now (exit-code 0). Flip --exit-code to 1 once the
+        # baseline is clean to gate the build on regressions. Invoking trivy
+        # via its own Docker image to avoid the trivy-action versioning
+        # churn; aquasec/trivy publishes stable versioned tags on Docker Hub.
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "$HOME/.cache/trivy":/root/.cache \
+            aquasec/trivy:latest image \
+              --severity CRITICAL,HIGH \
+              --ignore-unfixed \
+              --vuln-type os,library \
+              --format table \
+              --exit-code 0 \
+              "$FIRST_TAG"
 
       - name: Push image
         if: github.event_name != 'pull_request'
