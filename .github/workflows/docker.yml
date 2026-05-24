@@ -49,21 +49,36 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Smoke test
+      - name: Smoke test (verify GA injection)
+        # This image is feed-only: in production it requires a *.pgsql
+        # dump to be mounted at /backup and piped into catmaid-entry.sh
+        # before the service comes up. CI has no such fixture, so we
+        # skip the live HTTP test and instead exercise just the moving
+        # part this branch adds — the inject_gtm.py runtime template
+        # patch — by running it with an overridden entrypoint and
+        # grepping the resulting templates.
         run: |
           set -euo pipefail
-          CM_SETTINGS='{"neuron-name-service":{"component_list":[{"id":"skeletonid","name":"Skeleton ID"},{"id":"neuronname","name":"Neuron name"},{"id":"all-meta","name":"All annotations annotated with \"neuron name\"","option":"neuron name"}]}}'
-          docker run -d --name catmaid-test -p 80:80 \
-            -e INSTANCE_MEMORY=900 \
-            -e CM_CLIENT_SETTINGS="$CM_SETTINGS" \
-            -e CM_FORCE_CLIENT_SETTINGS=true \
-            "$FIRST_TAG"
-          sleep 120
-          docker logs catmaid-test
-          curl -sSf http://localhost:80/ -o /tmp/response.html
-          echo "--- assert GA snippet was injected ---"
-          grep -q 'VFB-GA-INJECTED' /tmp/response.html
-          grep -q "$(docker exec catmaid-test printenv GA_TAG_ID)" /tmp/response.html
+          docker run --rm --entrypoint /bin/bash "$FIRST_TAG" -c '
+            set -euo pipefail
+            echo "--- inject_gtm.py present ---"
+            ls -la /opt/VFB/inject_gtm.py
+            echo "--- GA_TAG_ID default ---"
+            printenv GA_TAG_ID
+            echo "--- run injection ---"
+            python3 /opt/VFB/inject_gtm.py
+            echo "--- assert marker present in both templates ---"
+            grep -q VFB-GA-INJECTED /home/django/applications/catmaid/templates/catmaid/index.html
+            grep -q VFB-GA-INJECTED /home/django/applications/catmaid/templates/catmaid/base.html
+            echo "--- assert configured GA_TAG_ID appears in injected snippet ---"
+            grep -q "$(printenv GA_TAG_ID)" /home/django/applications/catmaid/templates/catmaid/index.html
+            grep -q "$(printenv GA_TAG_ID)" /home/django/applications/catmaid/templates/catmaid/base.html
+            echo "--- assert idempotency (second run is a no-op) ---"
+            python3 /opt/VFB/inject_gtm.py
+            test $(grep -c VFB-GA-INJECTED /home/django/applications/catmaid/templates/catmaid/index.html) -eq 1
+            test $(grep -c VFB-GA-INJECTED /home/django/applications/catmaid/templates/catmaid/base.html) -eq 1
+            echo "OK"
+          '
 
       - name: Scan image for known vulnerabilities
         # Report-only for now (exit-code 0). Flip --exit-code to 1 once the
