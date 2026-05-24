@@ -36,14 +36,17 @@ RUN chmod +x /opt/VFB/*.sh
 # Development Group (PGDG) apt repo, but PGDG retired focal-pgdg when
 # Ubuntu 20.04 hit standard EOL — its Release file is gone, so apt-get
 # update aborts. Postgres is already installed in the base image, so we
-# just disable the PGDG source before running update.
+# strip any apt source line referencing PGDG (filename varies across
+# upstream builds — pgdg.list, pgdg-postgresql.list, etc.) before running
+# update.
 #
 # focal is past standard support; we apply what patches still flow into
 # focal-updates/focal-security with apt-get upgrade. ESM-only CVEs (e.g.
 # many libssl, openssh, glibc fixes after April 2025) require an Ubuntu
 # Pro token which we don't ship; the longer-term fix is to rebase
 # catmaid-standalone on jammy or noble.
-RUN rm -f /etc/apt/sources.list.d/pgdg.list /etc/apt/sources.list.d/postgresql.list \
+RUN find /etc/apt -type f \( -name '*.list' -o -name '*.sources' \) \
+        -exec sed -i -E '/apt\.postgresql\.org|pgdg/d' {} + \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
     && apt-get install -y r-base \
