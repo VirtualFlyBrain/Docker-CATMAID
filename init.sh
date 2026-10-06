@@ -23,9 +23,13 @@ python3 /opt/VFB/inject_gtm.py || echo "inject_ga: non-fatal failure, continuing
 # catmaid-entry.sh below never returns, so wait for the database in the
 # background. modify_superuser.py is idempotent and a no-op when the password
 # already matches or CM_INITIAL_ADMIN_PASS is unset.
+#
+# The wait must outlast the *.pgsql restore, which for the larger instances
+# (e.g. L1) takes well over 10 minutes (CREATE INDEX alone runs for several).
+# MODIFY_SUPERUSER_WAIT_MINUTES overrides the default of 360 (6 hours).
 (
   cd /home/django/projects || exit 0
-  for _ in $(seq 1 120); do
+  for _ in $(seq 1 $(( ${MODIFY_SUPERUSER_WAIT_MINUTES:-360} * 12 ))); do
     if printf '\n\n' | cat /opt/VFB/modify_superuser.py - \
          | /home/env/bin/python manage.py shell 2>/dev/null \
          | grep '^modify_superuser:'; then
@@ -33,7 +37,7 @@ python3 /opt/VFB/inject_gtm.py || echo "inject_ga: non-fatal failure, continuing
     fi
     sleep 5
   done
-  echo "modify_superuser: database not ready after 10 minutes, giving up" >&2
+  echo "modify_superuser: database not ready after ${MODIFY_SUPERUSER_WAIT_MINUTES:-360} minutes, giving up" >&2
 ) &
 
 if [ -e /backup/*.pgsql ]
